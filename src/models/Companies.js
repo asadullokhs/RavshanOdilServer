@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const companySchema = new mongoose.Schema(
   {
     name: String,
-    logo: String, // Cloudinary image URL
+    logo: Object, // Cloudinary image URL
     country: String,
     description: String,
     website: String,

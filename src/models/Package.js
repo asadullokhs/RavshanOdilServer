@@ -46,7 +46,7 @@ const packageSchema = new mongoose.Schema(
         ru: String,
         en: String,
       },
-      images: [String],
+      images: Array,
     },
     mealPlan: {
       uz: String,
