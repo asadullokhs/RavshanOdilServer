@@ -1,4 +1,4 @@
-const Company = require("../models/FlightCompany");
+const Company = require("../models/Companies");
 const { uploadFile, deleteFile } = require("../services/cloudinary");
 
 const companyCtrl = {
