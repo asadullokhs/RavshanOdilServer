@@ -68,7 +68,7 @@ const userCtrl = {
         res
           .status(200)
           .send({
-            message: "Muvafaqiyatli qoshildi",
+            message: "Muvafaqiyatli  topildi",
             user: otherDetails,
             token,
           });
