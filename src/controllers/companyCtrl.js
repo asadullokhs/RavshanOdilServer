@@ -54,7 +54,7 @@ const companyCtrl = {
   getAllCompanies: async (req, res) => {
     try {
       const companies = await Company.find();
-      res.status(200).json(companies);
+      res.status(200).json({message:"All companies", companies});
     } catch (err) {
       res.status(500).json({ message: "Failed to get companies", error: err.message });
     }
@@ -66,7 +66,7 @@ const companyCtrl = {
       const { id } = req.params;
       const company = await Company.findById(id);
       if (!company) return res.status(404).json({ message: "Company not found" });
-      res.status(200).json(company);
+      res.status(200).json({message:"One company", company});
     } catch (err) {
       res.status(500).json({ message: "Failed to get company", error: err.message });
     }

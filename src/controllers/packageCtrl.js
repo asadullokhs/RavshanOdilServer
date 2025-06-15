@@ -7,7 +7,8 @@ const packageCtrl = {
   // CREATE a new package
   createPackage: async (req, res) => {
     try {
-      const {
+     if(req.userIsAdmin){
+       const {
         name,
         price,
         duration,
@@ -67,6 +68,9 @@ const packageCtrl = {
   
       await newPackage.save();
       res.status(201).json(newPackage);
+     } else{
+      res.status(405).json({message:"Not allowed"})
+     }
     } catch (err) {
       console.error("Create Package Error:", err);
       res.status(500).json({ error: "Failed to create package" });

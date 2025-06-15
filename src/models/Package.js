@@ -3,82 +3,66 @@ const mongoose = require("mongoose");
 const packageSchema = new mongoose.Schema(
   {
     name: {
-      uz: String,
-      ru: String,
-      en: String,
+      type: String,
+      required: true,
     },
     price: Number,
     duration: {
-      uz: String,
-      ru: String,
-      en: String,
+      type: String,
+      required: true,
     },
     departureDate: Date,
     returnDate: Date,
     visaType: {
-      uz: String,
-      ru: String,
-      en: String,
+      type: String,
+      required: true,
     },
     departureCity: {
-      uz: String,
-      ru: String,
-      en: String,
+      type: String,
+      required: true,
     },
-    stopoverCities: [
-      {
-        uz: String,
-        ru: String,
-        en: String,
-      },
-    ],
+    stopoverCities: {
+      type: Array,
+      required: true,
+    },
     arrivalCity: {
-      uz: String,
-      ru: String,
-      en: String,
+       type: String,
+      required: true
     },
     hotel: {
       name: String,
       distance: Number,
       stars: Number,
       description: {
-        uz: String,
-        ru: String,
-        en: String,
+        type: String,
+      required: true
       },
       images: Array,
     },
     mealPlan: {
-      uz: String,
-      ru: String,
-      en: String,
+      type: String,
+      required: true
     },
     medicalService: {
-      uz: String,
-      ru: String,
-      en: String,
+     type: String,
+      required: true
     },
     transportService: {
-      uz: String,
-      ru: String,
-      en: String,
+      type: String,
+      required: true
     },
-    gifts: [
-      {
-        uz: String,
-        ru: String,
-        en: String,
-      },
-    ],
+    gifts: {
+       type: Array,
+      required: true
+    },
     company: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Company",
     },
     airline: String,
     details: {
-      uz: String,
-      ru: String,
-      en: String,
+     type: String,
+      required: true
     },
   },
   { timestamps: true }
