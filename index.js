@@ -6,7 +6,7 @@ const cors = require("cors");
 const orderRoutes = require("./src/routes/orderRoute");
 const commentRoutes = require("./src/routes/commentRouter")
 const companyRoutes = require("./src/routes/companyRouter")
-const packageRoutes = require("./src/routes/companyRouter")
+const packageRoutes = require("./src/routes/packageRoute")
 const authRoutes = require("./src/routes/authRouter")
 
 const app = express();

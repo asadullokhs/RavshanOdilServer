@@ -7,7 +7,7 @@ const companyCtrl = {
     try {
       const { name, country, description, website } = req.body;
 
-      if (!req.files || !req.files.logo) {
+      if (!req.files.logo) {
         return res.status(400).json({ message: "Logo image is required" });
       }
 

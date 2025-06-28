@@ -26,34 +26,41 @@ const packageSchema = new mongoose.Schema(
       required: true,
     },
     arrivalCity: {
-       type: String,
-      required: true
+      type: String,
+      required: true,
     },
-    hotel: {
-      name: String,
-      distance: Number,
-      stars: Number,
-      description: {
-        type: String,
-      required: true
-      },
-      images: Array,
+    hotelName: {
+      type: String,
+    },
+    hotelImages:{
+       type: Array,
+       default:[],
+    },
+    hotelDistance: {
+      type: Number,
+    },
+    hotelStars: {
+      type: Number,
+    },
+    hotelDescription: {
+      type: String,
+      required: true,
     },
     mealPlan: {
       type: String,
-      required: true
+      required: true,
     },
     medicalService: {
-     type: String,
-      required: true
+      type: String,
+      required: true,
     },
     transportService: {
       type: String,
-      required: true
+      required: true,
     },
     gifts: {
-       type: Array,
-      required: true
+      type: Array,
+      required: true,
     },
     company: {
       type: mongoose.Schema.Types.ObjectId,
@@ -61,8 +68,8 @@ const packageSchema = new mongoose.Schema(
     },
     airline: String,
     details: {
-     type: String,
-      required: true
+      type: String,
+      required: true,
     },
   },
   { timestamps: true }

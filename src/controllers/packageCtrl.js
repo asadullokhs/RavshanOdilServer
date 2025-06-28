@@ -1,81 +1,82 @@
 const { uploadFile, deleteFile } = require("../services/cloudinary");
 const Package = require("../models/Package");
 
-const Package = require("../models/Package");
-
 const packageCtrl = {
+  
   // CREATE a new package
-  createPackage: async (req, res) => {
-    try {
-     if(req.userIsAdmin){
-       const {
-        name,
-        price,
-        duration,
-        departureDate,
-        returnDate,
-        visaType,
-        departureCity,
-        stopoverCities,
-        arrivalCity,
-        hotel,
-        mealPlan,
-        medicalService,
-        transportService,
-        gifts,
-        company,
-        airline,
-        details,
-      } = req.body;
-  
-      let hotelImages = [];
-  
-      // Upload hotel images if present
-      if (req.files?.hotelImages) {
-        const files = Array.isArray(req.files.hotelImages)
-          ? req.files.hotelImages
-          : [req.files.hotelImages];
-  
-        for (const file of files) {
-          const result = await uploadFile(file);
-          hotelImages.push(result.url);
-        }
-      }
-  
-      const newPackage = new Package({
-        name: JSON.parse(name),
-        price,
-        duration: JSON.parse(duration),
-        departureDate,
-        returnDate,
-        visaType: JSON.parse(visaType),
-        departureCity: JSON.parse(departureCity),
-        stopoverCities: JSON.parse(stopoverCities),
-        arrivalCity: JSON.parse(arrivalCity),
-        hotel: {
-          ...JSON.parse(hotel),
-          images: hotelImages,
-          description: JSON.parse(JSON.parse(hotel).description),
-        },
-        mealPlan: JSON.parse(mealPlan),
-        medicalService: JSON.parse(medicalService),
-        transportService: JSON.parse(transportService),
-        gifts: JSON.parse(gifts),
-        company,
-        airline,
-        details: JSON.parse(details),
-      });
-  
-      await newPackage.save();
-      res.status(201).json(newPackage);
-     } else{
-      res.status(405).json({message:"Not allowed"})
-     }
-    } catch (err) {
-      console.error("Create Package Error:", err);
-      res.status(500).json({ error: "Failed to create package" });
+ createPackage: async (req, res) => {
+  try {
+    if (!req.userIsAdmin) {
+      return res.status(405).json({ message: "Not allowed" });
     }
-  },
+
+    const {
+      name,
+      price,
+      duration,
+      departureDate,
+      returnDate,
+      visaType,
+      departureCity,
+      stopoverCities,
+      arrivalCity,
+      hotelName,
+      hotelDistance,
+      hotelStars,
+      hotelDescription,
+      mealPlan,
+      medicalService,
+      transportService,
+      gifts,
+      company,
+      airline,
+      details,
+    } = req.body;
+
+    // Upload hotel images if provided
+    let hotelImages = [];
+    if (req.files?.hotelImages) {
+      const files = Array.isArray(req.files.hotelImages)
+        ? req.files.hotelImages
+        : [req.files.hotelImages];
+
+      for (const file of files) {
+        const result = await uploadFile(file);
+        hotelImages.push(result.url);
+      }
+    }
+
+    const newPackage = new Package({
+      name,
+      price,
+      duration,
+      departureDate,
+      returnDate,
+      visaType,
+      departureCity,
+      stopoverCities: JSON.parse(stopoverCities),
+      arrivalCity,
+      hotelName,
+      hotelDistance,
+      hotelStars,
+      hotelDescription,
+      hotelImages,
+      mealPlan,
+      medicalService,
+      transportService,
+      gifts: JSON.parse(gifts),
+      company,
+      airline,
+      details,
+    });
+
+    await newPackage.save();
+    res.status(201).json(newPackage);
+  } catch (err) {
+    console.error("Create Package Error:", err);
+    res.status(500).json({ error: "Failed to create package" });
+  }
+},
   // GET all packages
   getAllPackages: async (req, res) => {
     try {
