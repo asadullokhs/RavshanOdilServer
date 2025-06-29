@@ -6,6 +6,10 @@ const packageSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    photo:{
+      type: Object,
+      required: true,
+    },
     price: Number,
     duration: {
       type: String,

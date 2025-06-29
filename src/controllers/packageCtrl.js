@@ -2,85 +2,97 @@ const { uploadFile, deleteFile } = require("../services/cloudinary");
 const Package = require("../models/Package");
 
 const packageCtrl = {
-  
   // CREATE a new package
- createPackage: async (req, res) => {
-  try {
-    if (!req.userIsAdmin) {
-      return res.status(405).json({ message: "Not allowed" });
-    }
-
-    const {
-      name,
-      price,
-      duration,
-      departureDate,
-      returnDate,
-      visaType,
-      departureCity,
-      stopoverCities,
-      arrivalCity,
-      hotelName,
-      hotelDistance,
-      hotelStars,
-      hotelDescription,
-      mealPlan,
-      medicalService,
-      transportService,
-      gifts,
-      company,
-      airline,
-      details,
-    } = req.body;
-
-    // Upload hotel images if provided
-    let hotelImages = [];
-    if (req.files?.hotelImages) {
-      const files = Array.isArray(req.files.hotelImages)
-        ? req.files.hotelImages
-        : [req.files.hotelImages];
-
-      for (const file of files) {
-        const result = await uploadFile(file);
-        hotelImages.push(result.url);
+  createPackage: async (req, res) => {
+    try {
+      if (!req.userIsAdmin) {
+        return res.status(405).json({ message: "Not allowed" });
       }
+
+      const {
+        name,
+        price,
+        duration,
+        departureDate,
+        returnDate,
+        visaType,
+        departureCity,
+        stopoverCities,
+        arrivalCity,
+        hotelName,
+        hotelDistance,
+        hotelStars,
+        hotelDescription,
+        mealPlan,
+        medicalService,
+        transportService,
+        gifts,
+        company,
+        airline,
+        details,
+      } = req.body;
+
+      // ---------------------
+      // Upload MAIN photo
+      // ---------------------
+      if (!req.files?.photo) {
+        return res.status(400).json({ message: "Photo is required" });
+      }
+      const photoUpload = await uploadFile(req.files.photo);
+
+      // ---------------------
+      // Upload hotelImages
+      // ---------------------
+      let hotelImages = [];
+      if (req.files?.hotelImages) {
+        const files = Array.isArray(req.files.hotelImages)
+          ? req.files.hotelImages
+          : [req.files.hotelImages];
+
+        for (const file of files) {
+          const result = await uploadFile(file);
+          hotelImages.push(result.url);
+        }
+      }
+
+      const newPackage = new Package({
+        name,
+        photo: photoUpload, // full object (url, public_id, etc)
+        price,
+        duration,
+        departureDate,
+        returnDate,
+        visaType,
+        departureCity,
+        stopoverCities: JSON.parse(stopoverCities),
+        arrivalCity,
+        hotelName,
+        hotelDistance,
+        hotelStars,
+        hotelDescription,
+        hotelImages,
+        mealPlan,
+        medicalService,
+        transportService,
+        gifts: JSON.parse(gifts),
+        company,
+        airline,
+        details,
+      });
+
+      await newPackage.save();
+      res.status(201).json(newPackage);
+    } catch (err) {
+      console.error("Create Package Error:", err);
+      res.status(500).json({ error: "Failed to create package" });
     }
-
-    const newPackage = new Package({
-      name,
-      price,
-      duration,
-      departureDate,
-      returnDate,
-      visaType,
-      departureCity,
-      stopoverCities: JSON.parse(stopoverCities),
-      arrivalCity,
-      hotelName,
-      hotelDistance,
-      hotelStars,
-      hotelDescription,
-      hotelImages,
-      mealPlan,
-      medicalService,
-      transportService,
-      gifts: JSON.parse(gifts),
-      company,
-      airline,
-      details,
-    });
-
-    await newPackage.save();
-    res.status(201).json(newPackage);
-  } catch (err) {
-    console.error("Create Package Error:", err);
-    res.status(500).json({ error: "Failed to create package" });
-  }
-},
+  },
   // GET all packages
   getAllPackages: async (req, res) => {
     try {
-      const packages = await Package.find().populate("company").sort({ createdAt: -1 });
+      const packages = await Package.find()
+        .populate("company")
+        .sort({ createdAt: -1 });
       res.status(200).json(packages);
     } catch (err) {
       console.error("Get Packages Error:", err);
@@ -107,17 +119,25 @@ const packageCtrl = {
       if (updated.name) updated.name = JSON.parse(updated.name);
       if (updated.duration) updated.duration = JSON.parse(updated.duration);
       if (updated.visaType) updated.visaType = JSON.parse(updated.visaType);
-      if (updated.departureCity) updated.departureCity = JSON.parse(updated.departureCity);
-      if (updated.arrivalCity) updated.arrivalCity = JSON.parse(updated.arrivalCity);
-      if (updated.stopoverCities) updated.stopoverCities = JSON.parse(updated.stopoverCities);
-      if (updated.hotel?.description) updated.hotel.description = JSON.parse(updated.hotel.description);
+      if (updated.departureCity)
+        updated.departureCity = JSON.parse(updated.departureCity);
+      if (updated.arrivalCity)
+        updated.arrivalCity = JSON.parse(updated.arrivalCity);
+      if (updated.stopoverCities)
+        updated.stopoverCities = JSON.parse(updated.stopoverCities);
+      if (updated.hotel?.description)
+        updated.hotel.description = JSON.parse(updated.hotel.description);
       if (updated.mealPlan) updated.mealPlan = JSON.parse(updated.mealPlan);
-      if (updated.medicalService) updated.medicalService = JSON.parse(updated.medicalService);
-      if (updated.transportService) updated.transportService = JSON.parse(updated.transportService);
+      if (updated.medicalService)
+        updated.medicalService = JSON.parse(updated.medicalService);
+      if (updated.transportService)
+        updated.transportService = JSON.parse(updated.transportService);
       if (updated.gifts) updated.gifts = JSON.parse(updated.gifts);
       if (updated.details) updated.details = JSON.parse(updated.details);
 
-      const pkg = await Package.findByIdAndUpdate(req.params.id, updated, { new: true });
+      const pkg = await Package.findByIdAndUpdate(req.params.id, updated, {
+        new: true,
+      });
       if (!pkg) return res.status(404).json({ error: "Package not found" });
 
       res.status(200).json(pkg);
