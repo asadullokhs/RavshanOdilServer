@@ -93,7 +93,7 @@ const packageCtrl = {
       const packages = await Package.find()
         .populate("company")
         .sort({ createdAt: -1 });
-      res.status(200).json(packages);
+      res.status(200).json({message: "All packages", packages});
     } catch (err) {
       console.error("Get Packages Error:", err);
       res.status(500).json({ error: "Failed to get packages" });
