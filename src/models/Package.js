@@ -2,15 +2,24 @@ const mongoose = require("mongoose");
 
 const packageSchema = new mongoose.Schema(
   {
-    name: {
+    type: {
       type: String,
       required: true,
+      enum: ["economy", "standart", "comfort", "luxury"], // Type of package
+    },
+    seatsLeft:{
+     type: Number, 
+     required: true, // Number of seats left for the package
+    },
+    name: {
+      type: String,
+      required: true, // Name of the package
     },
     photo:{
       type: Object,
-      required: true,
+      required: true, // Main photo of the package, stored as an object (e.g., Cloudinary URL)
     },
-    price: Number,
+    price: Number, // Price of the package, can be a number or null
     duration: {
       type: String,
       required: true,
@@ -70,7 +79,6 @@ const packageSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Company",
     },
-    airline: String,
     details: {
       type: String,
       required: true,

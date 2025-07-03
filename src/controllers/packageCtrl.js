@@ -18,6 +18,8 @@ const packageCtrl = {
         visaType,
         departureCity,
         stopoverCities,
+        seatsLeft,
+        type,
         arrivalCity,
         hotelName,
         hotelDistance,
@@ -28,7 +30,6 @@ const packageCtrl = {
         transportService,
         gifts,
         company,
-        airline,
         details,
       } = req.body;
 
@@ -76,7 +77,8 @@ const packageCtrl = {
         transportService,
         gifts: JSON.parse(gifts),
         company,
-        airline,
+        seatsLeft,
+        type,
         details,
       });
 

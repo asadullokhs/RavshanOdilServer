@@ -4,12 +4,11 @@ const commentCtrl = {
   // Add a new comment
   addComment: async (req, res) => {
     try {
-      const { fullName, comment, image, package: packageId } = req.body;
+      const { fullName, comment, package: packageId } = req.body;
 
       const newComment = new Comment({
         fullName,
         comment,
-        image,
         package: packageId || null,
       });
 
