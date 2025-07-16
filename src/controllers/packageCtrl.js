@@ -107,7 +107,7 @@ const packageCtrl = {
     try {
       const pkg = await Package.findById(req.params.id).populate("company");
       if (!pkg) return res.status(404).json({ error: "Package not found" });
-      res.status(200).json(pkg);
+      res.status(200).json({message: "Package found", package: pkg});
     } catch (err) {
       console.error("Get Package Error:", err);
       res.status(500).json({ error: "Failed to get package" });

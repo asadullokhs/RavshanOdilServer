@@ -4,12 +4,12 @@ const commentCtrl = {
   // Add a new comment
   addComment: async (req, res) => {
     try {
-      const { fullName, comment, package: packageId } = req.body;
+      const { fullName, comment, stars } = req.body;
 
       const newComment = new Comment({
         fullName,
         comment,
-        package: packageId || null,
+        stars,
       });
 
       await newComment.save();
@@ -22,8 +22,9 @@ const commentCtrl = {
   // Get all comments
   getAllComments: async (req, res) => {
     try {
-      const comments = await Comment.find().populate("package", "name");
-      res.status(200).json(comments);
+      const comments = await Comment.find().sort({ createdAt: -1 });
+      if (!comments.length) return res.status(404).json({ message: "No comments found" });
+      res.status(200).json({ message: "All comments retrieved", comments });
     } catch (err) {
       res.status(500).json({ message: "Failed to get comments", error: err.message });
     }

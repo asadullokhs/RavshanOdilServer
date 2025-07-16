@@ -10,10 +10,10 @@ const commentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    package: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Package", // Optional: comment belongs to a package
-    },
+    stars: {
+      type: Number,
+      default: 0,
+     }, // Optional field for rating
   },
   {
     timestamps: true, // adds createdAt and updatedAt
