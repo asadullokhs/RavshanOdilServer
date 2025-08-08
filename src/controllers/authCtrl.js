@@ -41,10 +41,11 @@ const userCtrl = {
     }
   },
   login: async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password } = req.body;    
     try {
       if (username && password) {
         const oldUser = await User.findOne({ username });
+        
         if (!oldUser) {
           return res.status(404).json({ message: "Foydalanuvchi topilmadi" });
         }

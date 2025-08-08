@@ -22,7 +22,9 @@ const orderCtrl = {
 
       await newOrder.save();
 
-      res.status(201).json({ message: "Order created successfully", order: newOrder });
+      res
+        .status(201)
+        .json({ message: "Order created successfully", order: newOrder });
     } catch (err) {
       console.error("Create Order Error:", err);
       res.status(500).json({ error: "Failed to create order" });
@@ -32,7 +34,14 @@ const orderCtrl = {
   // Get all orders
   getAllOrders: async (req, res) => {
     try {
-      const orders = await Order.find().populate("package");
+      const orders = await Order.find().populate({
+        path: "package",
+        populate: {
+          path: "company",
+          select: "name", // only retrieve the name field of the company
+        },
+      });
+
       res.status(200).json(orders);
     } catch (err) {
       console.error("Get Orders Error:", err);

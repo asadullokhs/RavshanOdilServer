@@ -115,39 +115,22 @@ const packageCtrl = {
   },
 
   // UPDATE a package
-  updatePackage: async (req, res) => {
-    try {
-      const updated = req.body;
-      if (updated.name) updated.name = JSON.parse(updated.name);
-      if (updated.duration) updated.duration = JSON.parse(updated.duration);
-      if (updated.visaType) updated.visaType = JSON.parse(updated.visaType);
-      if (updated.departureCity)
-        updated.departureCity = JSON.parse(updated.departureCity);
-      if (updated.arrivalCity)
-        updated.arrivalCity = JSON.parse(updated.arrivalCity);
-      if (updated.stopoverCities)
-        updated.stopoverCities = JSON.parse(updated.stopoverCities);
-      if (updated.hotel?.description)
-        updated.hotel.description = JSON.parse(updated.hotel.description);
-      if (updated.mealPlan) updated.mealPlan = JSON.parse(updated.mealPlan);
-      if (updated.medicalService)
-        updated.medicalService = JSON.parse(updated.medicalService);
-      if (updated.transportService)
-        updated.transportService = JSON.parse(updated.transportService);
-      if (updated.gifts) updated.gifts = JSON.parse(updated.gifts);
-      if (updated.details) updated.details = JSON.parse(updated.details);
+updatePackage: async (req, res) => {
+  try {
+    const updated = req.body;
 
-      const pkg = await Package.findByIdAndUpdate(req.params.id, updated, {
-        new: true,
-      });
-      if (!pkg) return res.status(404).json({ error: "Package not found" });
+    const pkg = await Package.findByIdAndUpdate(req.params.id, updated, {
+      new: true,
+    });
 
-      res.status(200).json(pkg);
-    } catch (err) {
-      console.error("Update Package Error:", err);
-      res.status(500).json({ error: "Failed to update package" });
-    }
-  },
+    if (!pkg) return res.status(404).json({ error: "Package not found" });
+
+    res.status(200).json(pkg);
+  } catch (err) {
+    console.error("Update Package Error:", err);
+    res.status(500).json({ error: "Failed to update package" });
+  }
+},
 
   // DELETE a package
   deletePackage: async (req, res) => {
