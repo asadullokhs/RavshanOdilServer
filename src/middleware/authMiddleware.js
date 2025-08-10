@@ -8,7 +8,6 @@ const authMiddlewear = (req, res, next) => {
     const decode = JWT.decode(token, JWT_SECRET_KEY);
         
     req.user = decode;
-    
 
     if (decode?.role === "admin") {
       req.userIsAdmin = true;

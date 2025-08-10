@@ -3,7 +3,7 @@ const Package = require("../models/Package");
 
 const packageCtrl = {
   // CREATE a new package
-  createPackage: async (req, res) => {
+  createPackage: async (req, res) => {    
     try {
       if (!req.userIsAdmin) {
         return res.status(405).json({ message: "Not allowed" });
