@@ -4,10 +4,10 @@ const mongoose = require("mongoose");
 const fileUpload = require("express-fileupload");
 const cors = require("cors");
 const orderRoutes = require("./src/routes/orderRoute");
-const commentRoutes = require("./src/routes/commentRouter")
-const companyRoutes = require("./src/routes/companyRouter")
-const packageRoutes = require("./src/routes/packageRoute")
-const authRoutes = require("./src/routes/authRouter")
+const commentRoutes = require("./src/routes/commentRouter");
+const companyRoutes = require("./src/routes/companyRouter");
+const packageRoutes = require("./src/routes/packageRoute");
+const authRoutes = require("./src/routes/authRouter");
 
 const app = express();
 
@@ -15,7 +15,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(fileUpload({ useTempFiles: true }));
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "/tmp", // ✅ writable directory in Vercel serverless
+  })
+);
 
 // routes
 app.use("/api/orders", orderRoutes);
@@ -23,7 +28,6 @@ app.use("/api/comments", commentRoutes);
 app.use("/api/company", companyRoutes);
 app.use("/api/package", packageRoutes);
 app.use("/api/auth", authRoutes);
-
 
 const PORT = process.env.PORT || 4002;
 const MONGO_URL = process.env.MONGO_URL;
