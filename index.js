@@ -8,6 +8,7 @@ const commentRoutes = require("./src/routes/commentRouter");
 const companyRoutes = require("./src/routes/companyRouter");
 const packageRoutes = require("./src/routes/packageRoute");
 const authRoutes = require("./src/routes/authRouter");
+const ticketRoutes = require("./src/routes/ticketRouter");
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use("/api/comments", commentRoutes);
 app.use("/api/company", companyRoutes);
 app.use("/api/package", packageRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/ticket", ticketRoutes);
 
 const PORT = process.env.PORT || 4002;
 const MONGO_URL = process.env.MONGO_URL;
